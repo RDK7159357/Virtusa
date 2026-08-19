@@ -1,48 +1,30 @@
 from collections import Counter
 
 
-def lego_chain(wall, N, B):
-	if not wall or not B:
-		return [-1]
+def find_lego_chains(wall, n, blocks):
+    if not blocks or not wall:
+        return [-1]
 
-	word_len = len(B[0])
-	if any(len(word) != word_len for word in B):
-		return [-1]
+    L = len(blocks[0])
+    total = n * L
+    wall_len = len(wall)
 
-	total_len = word_len * N
-	if len(wall) < total_len:
-		return [-1]
+    if total > wall_len:
+        return [-1]
 
-	need = Counter(B)
-	result = []
+    target = Counter(blocks)
+    result = []
 
-	for offset in range(word_len):
-		left = offset
-		window = Counter()
-		used = 0
+    for i in range(wall_len - total + 1):
+        window = wall[i : i + total]
 
-		for right in range(offset, len(wall) - word_len + 1, word_len):
-			word = wall[right:right + word_len]
-			if word not in need:
-				window.clear()
-				used = 0
-				left = right + word_len
-				continue
+        words = []
+        for j in range(0, total, L):
+            words.append(window[j : j + L])
 
-			window[word] += 1
-			used += 1
+        if Counter(words) == target:
+            result.append(i)
 
-			while window[word] > need[word]:
-				left_word = wall[left:left + word_len]
-				window[left_word] -= 1
-				used -= 1
-				left += word_len
+    return result if result else [-1]
 
-			if used == N:
-				result.append(left)
-				left_word = wall[left:left + word_len]
-				window[left_word] -= 1
-				used -= 1
-				left += word_len
-
-	return sorted(result) if result else [-1]
+print(find_lego_chains("barfoothefoobarman", 2, ["foo", "bar"]))

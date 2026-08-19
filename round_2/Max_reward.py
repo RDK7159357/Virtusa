@@ -18,3 +18,5 @@ def max_reward(a,n):
         dp[i+3] = max(skip,take,take_pair)
         
     return dp[n+2]
+
+print(max_reward([1,4,8,-3,10,6,1], 5))  # 20

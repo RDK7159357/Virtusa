@@ -20,4 +20,4 @@ def sub_number_closest(n,k):
                 best=num
     return best if best is not None else -1
 
-print(sub_number_closest(12345, 100))  # Example usage
+print(sub_number_closest(123, 14))  # 23

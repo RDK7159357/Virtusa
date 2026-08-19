@@ -1,27 +1,30 @@
-def decay(grid,m,n):
-    dp = [[-1]*m for _ in range(n)]
+import sys
 
-    dirs = [(0,1),(1,0),(0,-1),(-1,0)]
+sys.setrecursionlimit(100000)
 
-    def dfs(i,j):
-        if dp[i][j]!=-1:
+
+def max_decay_trail(grid, n, m, sx, sy):
+    dp = [[-1] * m for _ in range(n)]
+    dirs = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+
+    def dfs(i, j):
+        if dp[i][j] != -1:
             return dp[i][j]
 
-        best=1
+        best = 1
 
-        for di,dj in dirs:
-            ni,nj = i+di,j+dj
+        for di, dj in dirs:
+            ni, nj = i + di, j + dj
 
-            if 0<=ni<n and 0<=nj<m:
-                if grid[ni][nj]<grid[i][j]:
-                    best = max(best,1+dfs(ni,nj))
+            if 0 <= ni < n and 0 <= nj < m:
+                if grid[ni][nj] < grid[i][j]:
+                    best = max(best, 1 + dfs(ni, nj))
 
-        dp[i][j]=best
+        dp[i][j] = best
         return best
-    ans =0
-    for i in range(n):
-        for j in range(m):
-            ans = max(ans,dfs(i,j))
-    return ans
 
-print(decay([[1,2], [5,6],[4,9]],3,2))
+    return dfs(sx, sy)
+
+
+grid = [[9, 6, 3], [8, 5, 2], [7, 4, 1]]
+print(max_decay_trail(grid, 3, 3, 0, 0))
